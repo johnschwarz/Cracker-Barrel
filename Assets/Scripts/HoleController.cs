@@ -7,27 +7,38 @@ public class HoleController : MonoBehaviour {
     public bool isEmpty;
     public bool isOK;
     public bool isBad;
+    public bool hasPeg;
+
+    public Point GridPosition { get; private set; }
 
     private SpriteRenderer sprite;
+
+    public GameObject pegGO;
 
 	void Start () {
         sprite = GetComponent<SpriteRenderer>();
 	}
-	
 
-	void Update () {
+    public void Setup(Point gridPos)
+    {
+        this.GridPosition = gridPos;
+    }
 
-        if (isEmpty)
+    private void OnMouseOver()
+    {
+        //show possible moves
+        Debug.Log("X:" + GridPosition.X + " Y:" + GridPosition.Y);
+    }
+
+    void Update () {
+
+        if (hasPeg)
         {
             sprite.color = statesOfHole[0];
+            pegGO.SetActive(true);
         }
-        if (isOK)
-        {
-            sprite.color = statesOfHole[1];
-        }
-        if (isBad)
-        {
-            sprite.color = statesOfHole[2];
-        }
+        else {
+            pegGO.SetActive(false);
+        }       
 	}
 }

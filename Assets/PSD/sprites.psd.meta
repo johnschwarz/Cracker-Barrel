@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a0076222339b43644983f0c81065d171
-timeCreated: 1480711228
+timeCreated: 1480711723
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -9,6 +9,7 @@ TextureImporter:
     21300004: OK
     21300006: BAD
     21300008: Hole
+    21300010: Peg
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -117,6 +118,19 @@ TextureImporter:
         y: 80
         width: 10
         height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Peg
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 79
+        width: 12
+        height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
