@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Collections;
 
 
-public class Grid : MonoBehaviour {
+public class Grid : MonoBehaviour
+{
 
     public int xSize, ySize;
     public float spacing = 6.5f;
@@ -41,11 +42,10 @@ public class Grid : MonoBehaviour {
         };
     void Start()
     {
-        StartCoroutine(Generate());
+        Generate();
     }
-    
 
-    private IEnumerator Generate()
+    private void Generate()
     {
         Holes = new Dictionary<Point, HoleController>();
 
@@ -55,12 +55,11 @@ public class Grid : MonoBehaviour {
             {
                 if (board[y, x] == 1)
                 {
-                    yield return new WaitForSeconds(0.1f);
                     GameObject triangleGO = (GameObject)Instantiate(pegGO);
                     if (y % 2 == 0)
                     {
                         HoleController newHole = triangleGO.GetComponent<HoleController>();
-                        newHole.Setup(new Point( x, y));
+                        newHole.Setup(new Point(x, y));
                         triangleGO.transform.position = new Vector3(triangleGO.transform.position.x + x - 3.5f, triangleGO.transform.position.y + y - 3, triangleGO.transform.position.z) * spacing;
                         triangleGO.transform.parent = gameObject.transform;
                     }
@@ -74,7 +73,6 @@ public class Grid : MonoBehaviour {
                 }
             }
         }
-        
     }
 }
 
