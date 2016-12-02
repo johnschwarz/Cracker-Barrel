@@ -1,43 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+
 public class Grid : MonoBehaviour {
 
     public int xSize, ySize;
+    public float spacing = 6.5f;
+    public GameObject pegGO;
+    public GameObject peg2GO;
+    
 
-    void Awake()
+    private int[,] board = new int[,]
+        {
+            { 0,0,1,0,0},
+            { 0,1,1,0,0},
+            { 0,1,1,1,0},
+            { 1,1,1,1,0},
+            { 1,1,1,1,1}
+        };
+    void Start()
     {
-        GenerateGrid();
+        Generate();
     }
 
-    private Vector3[] vertices;
-    private void GenerateGrid()
+
+
+
+
+    void Generate()
     {
-        vertices = new Vector3[(xSize + 1) * (ySize + 1)];
-
-        for (int i = 0, y = 0; y <= ySize; y++)
+        for (int y = 0; y < board.GetLength(0); y++)
         {
-            for (int x = 0; x <= xSize; x++, i ++)
+            for (int x = 0; x < board.GetLength(0); x++)
             {
-                if ((y%2) ==  0)
-                { vertices[i] = new Vector3(x +0.5f, y); }
-                else
+                if (board[y, x] == 1)
                 {
-                    vertices[i] = new Vector3(x, y);
-                }
+                    
+                    GameObject gridPlane = (GameObject)Instantiate(peg2GO);
+                    if (y % 2 == 0)
+                    {
+                        gridPlane.transform.position = new Vector3(gridPlane.transform.position.x + x - 3.5f, gridPlane.transform.position.y + y - 3,
+                                                            gridPlane.transform.position.z) * spacing;
+                   
+                    }
+                    else
+                    {
 
+                        gridPlane.transform.position = new Vector3(gridPlane.transform.position.x + x - 3, gridPlane.transform.position.y + y - 3,
+                                                                gridPlane.transform.position.z) * spacing;
+               
+                    }
+
+
+                }
             }
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        if (vertices == null) { return; }
-        Gizmos.color = Color.black;
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            Gizmos.DrawSphere(vertices[i], 0.1f);
-        }
-    }
 }
+
+
