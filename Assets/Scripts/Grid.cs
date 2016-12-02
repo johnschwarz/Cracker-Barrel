@@ -7,27 +7,33 @@ public class Grid : MonoBehaviour {
     public int xSize, ySize;
     public float spacing = 6.5f;
     public GameObject pegGO;
-    public GameObject peg2GO;
+    
     
 
     private int[,] board = new int[,]
         {
-            { 0,0,1,0,0},
-            { 0,1,1,0,0},
-            { 0,1,1,1,0},
+            { 1,1,1,1,1},
             { 1,1,1,1,0},
-            { 1,1,1,1,1}
+            { 0,1,1,1,0},
+            { 0,1,1,0,0},
+            { 0,0,1,0,0}
         };
     void Start()
     {
-        Generate();
+        StartCoroutine(Generate());
+      //  StartCoroutine(boardShiftEffect());
+    }
+
+    private IEnumerator boardShiftEffect()
+    {
+        
+        yield return new WaitForSeconds(3.2f);
+        gameObject.transform.Rotate(new Vector3(0, 0, 180));
     }
 
 
 
-
-
-    void Generate()
+    private IEnumerator Generate()
     {
         for (int y = 0; y < board.GetLength(0); y++)
         {
@@ -35,22 +41,27 @@ public class Grid : MonoBehaviour {
             {
                 if (board[y, x] == 1)
                 {
-                    
-                    GameObject gridPlane = (GameObject)Instantiate(peg2GO);
+                    yield return new WaitForSeconds(0.1f);
+                    GameObject triangleGO = (GameObject)Instantiate(pegGO);
                     if (y % 2 == 0)
                     {
-                        gridPlane.transform.position = new Vector3(gridPlane.transform.position.x + x - 3.5f, gridPlane.transform.position.y + y - 3,
-                                                            gridPlane.transform.position.z) * spacing;
-                   
+                        triangleGO.transform.position = new Vector3(triangleGO.transform.position.x + x - 3.5f, triangleGO.transform.position.y + y - 3,
+                                                            triangleGO.transform.position.z) * spacing;
+                        triangleGO.transform.parent = gameObject.transform;
+                        
+
+
                     }
                     else
                     {
 
-                        gridPlane.transform.position = new Vector3(gridPlane.transform.position.x + x - 3, gridPlane.transform.position.y + y - 3,
-                                                                gridPlane.transform.position.z) * spacing;
-               
+                        triangleGO.transform.position = new Vector3(triangleGO.transform.position.x + x - 3, triangleGO.transform.position.y + y - 3,
+                                                                triangleGO.transform.position.z) * spacing;
+                        triangleGO.transform.parent = gameObject.transform;
+                        
                     }
 
+                    
 
                 }
             }

@@ -1,10 +1,14 @@
 fileFormatVersion: 2
 guid: a0076222339b43644983f0c81065d171
-timeCreated: 1480707393
+timeCreated: 1480711228
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Triangle
+    21300002: Empty
+    21300004: OK
+    21300006: BAD
+    21300008: Hole
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -61,6 +65,58 @@ TextureImporter:
         y: 70
         width: 30
         height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Empty
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 98
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: OK
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 98
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: BAD
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 98
+        width: 2
+        height: 2
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Hole
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 80
+        width: 10
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
