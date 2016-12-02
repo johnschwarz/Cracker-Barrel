@@ -11,6 +11,25 @@ public class Grid : MonoBehaviour {
 
     public Dictionary<Point, HoleController> Holes { get; set; }
 
+    private static Grid _Instance;
+    public static Grid Instance
+    {
+        get { return _Instance; }
+    }
+    void Awake()
+    {
+        if (_Instance != null && _Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            _Instance = this;
+        }
+        DontDestroyOnLoad(this.gameObject);
+    }
+
 
     private int[,] board = new int[,]
         {
@@ -23,24 +42,8 @@ public class Grid : MonoBehaviour {
     void Start()
     {
         StartCoroutine(Generate());
-      //  StartCoroutine(boardShiftEffect());
     }
-
-    private IEnumerator boardShiftEffect()
-    {
-        
-        yield return new WaitForSeconds(3.2f);
-        gameObject.transform.Rotate(new Vector3(0, 0, 180));
-    }
-
-
-    private void PlaceHole(int x, int y, Vector3 worldStart )
-    {
-
-        
-
-
-    }
+    
 
     private IEnumerator Generate()
     {
@@ -60,7 +63,6 @@ public class Grid : MonoBehaviour {
                         newHole.Setup(new Point( x, y));
                         triangleGO.transform.position = new Vector3(triangleGO.transform.position.x + x - 3.5f, triangleGO.transform.position.y + y - 3, triangleGO.transform.position.z) * spacing;
                         triangleGO.transform.parent = gameObject.transform;
-                        
                     }
                     else
                     {
@@ -68,14 +70,11 @@ public class Grid : MonoBehaviour {
                         newHole.Setup(new Point(x, y));
                         triangleGO.transform.position = new Vector3(triangleGO.transform.position.x + x - 3, triangleGO.transform.position.y + y - 3, triangleGO.transform.position.z) * spacing;
                         triangleGO.transform.parent = gameObject.transform;
-                        
                     }
-
-                    
-
                 }
             }
         }
+        
     }
 }
 
