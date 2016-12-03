@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Linq;
 
 public class TimeAndMenuManager : MonoBehaviour {
 
@@ -27,6 +28,18 @@ public class TimeAndMenuManager : MonoBehaviour {
         BoardManager.Instance.StartCoroutine(BoardManager.Instance.IHardMode());
         selectionPanel.SetActive(false);
         shouldCountDown = true;
+    }
+    public void returnToMenu()
+    {
+        shouldCountDown = false;
+        timeLeft = 180;
+        for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+        {
+            Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+            Grid.Instance.Holes.ElementAt(i).Value.CheckForPeg();
+            Grid.Instance.Holes.ElementAt(i).Value.ReturnPegsToDefault();
+        }
+        selectionPanel.SetActive(true);
     }
     private static TimeAndMenuManager _Instance;
     public static TimeAndMenuManager Instance

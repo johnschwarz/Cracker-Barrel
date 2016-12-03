@@ -171,7 +171,7 @@ public class HoleController : MonoBehaviour
         }
     }
 
-    private void ReturnPegsToDefault()
+    public void ReturnPegsToDefault()
     {
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
         {
