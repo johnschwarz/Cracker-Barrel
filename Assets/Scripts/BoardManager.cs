@@ -30,7 +30,7 @@ public class BoardManager : MonoBehaviour {
     public bool easyMode = true;
     public IEnumerator EasyMode()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
         {
             Grid.Instance.Holes.ElementAt(0).Value.hasPeg = false;
@@ -59,22 +59,37 @@ public class BoardManager : MonoBehaviour {
         { StartCoroutine(EasyMode()); }
     }
 
-    public void ValidOrNotFor2Spots(int neighbor1, int neighbor2, int spot1, int spot2 )
+    public void CheckTwoSurroundingHolesForValidity(int neighbor1, int neighbor2, int spot1, int spot2 )
     {
         if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == true && Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == true)
         {
             Grid.Instance.Holes.ElementAt(spot1).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor1).Value.firstChoice = true;
+            Grid.Instance.Holes.ElementAt(spot1).Value.firstSpot = true;
+
             Grid.Instance.Holes.ElementAt(spot2).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor2).Value.secondChoice = true;
+            Grid.Instance.Holes.ElementAt(spot2).Value.secondSpot= true;
+
+            Grid.Instance.Holes.ElementAt(neighbor1).Value.shouldBeRemovedBecauseOfJump = true;
+            Grid.Instance.Holes.ElementAt(neighbor2).Value.shouldBeRemovedBecauseOfJump = true;
+
         }
         else if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == true && Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == false)
         {
             Grid.Instance.Holes.ElementAt(spot1).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor1).Value.firstChoice = true;
+            Grid.Instance.Holes.ElementAt(spot1).Value.firstSpot = true;
+          Grid.Instance.Holes.ElementAt(neighbor1).Value.shouldBeRemovedBecauseOfJump = true;
             Grid.Instance.Holes.ElementAt(neighbor2).Value.ChangecolorToBad();
         }
         else if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == false && Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == true)
         {
             Grid.Instance.Holes.ElementAt(neighbor1).Value.ChangecolorToBad();
+            Grid.Instance.Holes.ElementAt(spot2).Value.secondSpot = true;
+            Grid.Instance.Holes.ElementAt(neighbor2).Value.secondChoice = true;
             Grid.Instance.Holes.ElementAt(spot2).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor2).Value.shouldBeRemovedBecauseOfJump = true;
         }
         else
         {
@@ -83,7 +98,7 @@ public class BoardManager : MonoBehaviour {
         }
     }
 
-    public void ValidOrNotFor4Spots(int neighbor1, int neighbor2, int neighbor3, int neighbor4, int spot1, int spot2, int spot3, int spot4)
+    public void CheckFourSurroundingHolesForValidity(int neighbor1, int neighbor2, int neighbor3, int neighbor4, int spot1, int spot2, int spot3, int spot4)
     {
         if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == false)
         { Grid.Instance.Holes.ElementAt(neighbor1).Value.ChangecolorToBad(); }
@@ -94,19 +109,28 @@ public class BoardManager : MonoBehaviour {
         if (Grid.Instance.Holes.ElementAt(neighbor4).Value.hasPeg == false)
         { Grid.Instance.Holes.ElementAt(neighbor4).Value.ChangecolorToBad(); }
 
-        if (Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == true)
-        { Grid.Instance.Holes.ElementAt(spot2).Value.ChangeColorToGood();
+        if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == true)
+        { Grid.Instance.Holes.ElementAt(spot1).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor1).Value.shouldBeRemovedBecauseOfJump = true;
+        }
 
+        if (Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == true)
+        {
+            Grid.Instance.Holes.ElementAt(spot2).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor2).Value.shouldBeRemovedBecauseOfJump = true;
         }
 
         if (Grid.Instance.Holes.ElementAt(neighbor3).Value.hasPeg == true)
-        { Grid.Instance.Holes.ElementAt(spot3).Value.ChangeColorToGood(); }
+        { Grid.Instance.Holes.ElementAt(spot3).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor3).Value.shouldBeRemovedBecauseOfJump = true;
+        }
 
         if (Grid.Instance.Holes.ElementAt(neighbor4).Value.hasPeg == true)
-        { Grid.Instance.Holes.ElementAt(spot4).Value.ChangeColorToGood(); }
+        { Grid.Instance.Holes.ElementAt(spot4).Value.ChangeColorToGood();
+            Grid.Instance.Holes.ElementAt(neighbor4).Value.shouldBeRemovedBecauseOfJump = true;
+        }
 
-        if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == true)
-        { Grid.Instance.Holes.ElementAt(spot1).Value.ChangeColorToGood(); }
+  
 
 
 
@@ -123,67 +147,67 @@ public class BoardManager : MonoBehaviour {
             //for 0th Row
             if (holeController.GridPosition.X == 0 && holeController.GridPosition.Y == 0)
             {
-            ValidOrNotFor2Spots(1, 5, 2, 9);
+            CheckTwoSurroundingHolesForValidity(1, 5, 2, 9);
             }
             else if (holeController.GridPosition.X == 1 && holeController.GridPosition.Y == 0)
             {
-                ValidOrNotFor2Spots(2, 6, 3, 10);
+                CheckTwoSurroundingHolesForValidity(2, 6, 3, 10);
             }
             else if (holeController.GridPosition.X == 2 && holeController.GridPosition.Y == 0)
             {
-                ValidOrNotFor4Spots(1,3,6,7,0,4,9,11);
+                CheckFourSurroundingHolesForValidity(1,3,6,7,0,4,9,11);
             }
             else if (holeController.GridPosition.X == 3 && holeController.GridPosition.Y == 0)
             {
-                ValidOrNotFor2Spots(2, 7, 1, 10);
+                CheckTwoSurroundingHolesForValidity(2, 7, 1, 10);
             }
             else if (holeController.GridPosition.X == 4 && holeController.GridPosition.Y == 0)
             {
-                ValidOrNotFor2Spots(3, 8, 2, 11);
+                CheckTwoSurroundingHolesForValidity(3, 8, 2, 11);
             }
             //for 1st Row
             else if (holeController.GridPosition.X == 0 && holeController.GridPosition.Y == 1)
             {
-                ValidOrNotFor2Spots(6, 9, 7, 12);
+                CheckTwoSurroundingHolesForValidity(6, 9, 7, 12);
             }
             else if (holeController.GridPosition.X == 1 && holeController.GridPosition.Y == 1)
             {
-                ValidOrNotFor2Spots(7, 10, 8, 13);
+                CheckTwoSurroundingHolesForValidity(7, 10, 8, 13);
             }
             else if (holeController.GridPosition.X == 2 && holeController.GridPosition.Y == 1)
             {
-                ValidOrNotFor2Spots(6, 10, 5, 12);
+                CheckTwoSurroundingHolesForValidity(6, 10, 5, 12);
             }
             else if (holeController.GridPosition.X == 3 && holeController.GridPosition.Y == 1)
             {
-                ValidOrNotFor2Spots(7, 11, 6, 13);
+                CheckTwoSurroundingHolesForValidity(7, 11, 6, 13);
             }
             //for 2nd Row
             else if (holeController.GridPosition.X == 1 && holeController.GridPosition.Y == 2)
             {
-                ValidOrNotFor4Spots(5,6,10,12,0,2,11,14);
+                CheckFourSurroundingHolesForValidity(5,6,10,12,0,2,11,14);
             }
             else if (holeController.GridPosition.X == 2 && holeController.GridPosition.Y == 2)
             {
-                ValidOrNotFor2Spots(6, 7, 1, 3);
+                CheckTwoSurroundingHolesForValidity(6, 7, 1, 3);
             }
             else if (holeController.GridPosition.X == 3 && holeController.GridPosition.Y == 2)
             {
-                ValidOrNotFor4Spots(7, 8, 10, 13, 2, 4, 9, 14);
+                CheckFourSurroundingHolesForValidity(7, 8, 10, 13, 2, 4, 9, 14);
             }
             //for 3rd row
             else if (holeController.GridPosition.X == 1 && holeController.GridPosition.Y == 3)
             {
-                ValidOrNotFor2Spots(9, 10, 5, 7);
+                CheckTwoSurroundingHolesForValidity(9, 10, 5, 7);
             }
             else if (holeController.GridPosition.X == 2 && holeController.GridPosition.Y == 3)
             {
-                ValidOrNotFor2Spots(10, 11, 6, 8);
+                CheckTwoSurroundingHolesForValidity(10, 11, 6, 8);
             }
             //for 4th Row
             else if (holeController.GridPosition.X == 2 && holeController.GridPosition.Y == 4)
             {
-                ValidOrNotFor2Spots(12, 13, 9, 11);
+                CheckTwoSurroundingHolesForValidity(12, 13, 9, 11);
             }
         }
     }

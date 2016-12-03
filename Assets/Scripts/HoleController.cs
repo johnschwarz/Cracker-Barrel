@@ -2,27 +2,33 @@
 using System.Collections;
 using System.Linq;
 
-public class HoleController : MonoBehaviour {
+public class HoleController : MonoBehaviour
+{
 
     public Color[] statesOfHole;
-    public bool isEmpty;
-    public bool isOK;
-    public bool isBad;
     public bool hasPeg;
-
     public Point GridPosition { get; private set; }
-
     private SpriteRenderer sprite;
-
     public GameObject pegGO;
-
-
     public bool canBePutInto;
+    public bool startingHole = false;
+    public bool shouldBeRemovedBecauseOfJump = false;
 
-    void Start() {
+    public bool firstChoice;
+    public bool secondChoice;
+    public bool thirdChoice;
+    public bool fourthChoice;
+
+    public bool firstSpot;
+    public bool secondSpot;
+    public bool thirdSpot;
+    public bool fourthSpot;
+
+
+    void Start()
+    {
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = statesOfHole[0];
-        CheckForPeg();
     }
 
     public void CheckForPeg()
@@ -43,38 +49,59 @@ public class HoleController : MonoBehaviour {
         Grid.Instance.Holes.Add(gridPos, this);
     }
 
-
-    public bool clickedHole = false;
+    // Covers picking up and putting down, but how to remove the peg?
     void OnMouseDown()
     {
+        // BoardManager checks for Valid holes.
         if (!BoardManager.Instance.isHeld)
         {
-            clickedHole = true;
+            // Checks to see if it's the hole you clicked; used later to deactivate the pegGO on the hole.
+            startingHole = true;
+            // Used to keep holes highlighted.
             BoardManager.Instance.isHeld = true;
             canBePutInto = true;
             pegGO.SetActive(false);
-            // Comment BoardManager checks for Valid holes.
             BoardManager.Instance.holdingPegGO.SetActive(true);
         }
-        else if (BoardManager.Instance.isHeld && canBePutInto && clickedHole)
+        else if (BoardManager.Instance.isHeld && canBePutInto && startingHole)
         {
             BoardManager.Instance.holdingPegGO.SetActive(false);
             pegGO.SetActive(true);
             canBePutInto = false;
-            clickedHole = false;
+            startingHole = false;
             BoardManager.Instance.isHeld = false;
+            ReturnPegsToDefault();
 
         }
-        else if (BoardManager.Instance.isHeld && canBePutInto && !clickedHole)
+        else if (BoardManager.Instance.isHeld && canBePutInto && !startingHole)
         {
-            BoardManager.Instance.holdingPegGO.SetActive(false);
-            pegGO.SetActive(true);
-            canBePutInto = false;
-            hasPeg = true;
-            BoardManager.Instance.isHeld = false;
+            CheckPegsForJump();
+            ReturnPegsToDefault();
+        }
+    }
+
+    private void CheckPegsForJump()
+    {
+        BoardManager.Instance.holdingPegGO.SetActive(false);
+        pegGO.SetActive(true);
+        canBePutInto = false;
+        hasPeg = true;
+        BoardManager.Instance.isHeld = false;
+
+        for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+        {
+            if (Grid.Instance.Holes.ElementAt(i).Value.startingHole == true)
+            {
+                Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
+                Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+                Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+            }
+        }
+        if (firstSpot)
+        {
             for (int i = 0; i < Grid.Instance.Holes.Count; i++)
             {
-                if (Grid.Instance.Holes.ElementAt(i).Value.clickedHole == true)
+                if (Grid.Instance.Holes.ElementAt(i).Value.firstChoice == true)
                 {
                     Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
                     Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
@@ -82,18 +109,71 @@ public class HoleController : MonoBehaviour {
                 }
             }
         }
+        if (secondSpot)
+        {
+            for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+            {
+                if (Grid.Instance.Holes.ElementAt(i).Value.secondChoice == true)
+                {
+                    Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
+                    Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+                    Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+                }
+            }
+        }
+        if (thirdSpot)
+        {
+            for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+            {
+                if (Grid.Instance.Holes.ElementAt(i).Value.thirdChoice == true)
+                {
+                    Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
+                    Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+                    Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+                }
+            }
+        }
+        if (fourthSpot)
+        {
+            for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+            {
+                if (Grid.Instance.Holes.ElementAt(i).Value.fourthChoice == true)
+                {
+                    Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
+                    Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+                    Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+                }
+            }
+        }
+
+
     }
-           
-          
-        
-  
+
+
+    private void ReturnPegsToDefault()
+    {
+
+        for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+        {
+            Grid.Instance.Holes.ElementAt(i).Value.ChangeColorToDefault();
+            Grid.Instance.Holes.ElementAt(i).Value.shouldBeRemovedBecauseOfJump = false;
+            Grid.Instance.Holes.ElementAt(i).Value.firstChoice = false;
+            Grid.Instance.Holes.ElementAt(i).Value.secondChoice = false;
+            Grid.Instance.Holes.ElementAt(i).Value.thirdChoice = false;
+            Grid.Instance.Holes.ElementAt(i).Value.fourthChoice = false;
+            Grid.Instance.Holes.ElementAt(i).Value.firstSpot = false;
+            Grid.Instance.Holes.ElementAt(i).Value.secondSpot = false;
+            Grid.Instance.Holes.ElementAt(i).Value.thirdSpot = false;
+            Grid.Instance.Holes.ElementAt(i).Value.fourthSpot = false;
+        }
+    }
 
     private void OnMouseOver()
     {
         if (!BoardManager.Instance.isHeld)
         {
             CheckForPeg();
-            //Debug.Log("X:" + GridPosition.X + " Y:" + GridPosition.Y);
+
             BoardManager.Instance.CheckMoves(gameObject.GetComponent<HoleController>());
         }
     }
@@ -102,17 +182,15 @@ public class HoleController : MonoBehaviour {
     {
         if (!BoardManager.Instance.isHeld)
         {
-            for (int i = 0; i < Grid.Instance.Holes.Count; i++)
-            {
-                Grid.Instance.Holes.ElementAt(i).Value.ChangeColorToDefault();
-            }
+            ReturnPegsToDefault();
         }
     }
 
-    public void ChangeColorToDefault() {
+    public void ChangeColorToDefault()
+    {
         sprite.color = statesOfHole[0];
         canBePutInto = false;
-        clickedHole = false;
+        startingHole = false;
         CheckForPeg();
     }
     public void ChangeColorToGood()
