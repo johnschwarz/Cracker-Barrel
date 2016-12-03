@@ -112,22 +112,34 @@ public class BoardManager : MonoBehaviour {
         if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == true)
         { Grid.Instance.Holes.ElementAt(spot1).Value.ChangeColorToGood();
             Grid.Instance.Holes.ElementAt(neighbor1).Value.shouldBeRemovedBecauseOfJump = true;
+
+            Grid.Instance.Holes.ElementAt(neighbor1).Value.firstChoice = true;
+            Grid.Instance.Holes.ElementAt(spot1).Value.firstSpot = true;
         }
 
         if (Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == true)
         {
             Grid.Instance.Holes.ElementAt(spot2).Value.ChangeColorToGood();
             Grid.Instance.Holes.ElementAt(neighbor2).Value.shouldBeRemovedBecauseOfJump = true;
+
+            Grid.Instance.Holes.ElementAt(neighbor2).Value.secondChoice = true;
+            Grid.Instance.Holes.ElementAt(spot2).Value.secondSpot = true;
         }
 
         if (Grid.Instance.Holes.ElementAt(neighbor3).Value.hasPeg == true)
         { Grid.Instance.Holes.ElementAt(spot3).Value.ChangeColorToGood();
             Grid.Instance.Holes.ElementAt(neighbor3).Value.shouldBeRemovedBecauseOfJump = true;
+
+            Grid.Instance.Holes.ElementAt(neighbor3).Value.thirdChoice = true;
+            Grid.Instance.Holes.ElementAt(spot3).Value.thirdSpot = true;
         }
 
         if (Grid.Instance.Holes.ElementAt(neighbor4).Value.hasPeg == true)
         { Grid.Instance.Holes.ElementAt(spot4).Value.ChangeColorToGood();
             Grid.Instance.Holes.ElementAt(neighbor4).Value.shouldBeRemovedBecauseOfJump = true;
+
+            Grid.Instance.Holes.ElementAt(neighbor4).Value.fourthChoice = true;
+            Grid.Instance.Holes.ElementAt(spot4).Value.fourthSpot = true;
         }
 
   
