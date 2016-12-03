@@ -3,6 +3,11 @@ using System.Collections;
 using System.Linq;
 
 public class BoardManager : MonoBehaviour {
+
+    public Transform PegSpot;
+    public bool isHeld = false;
+    public GameObject holdingPegGO;
+
     private static BoardManager _Instance;
     public static BoardManager Instance
     {
@@ -28,11 +33,11 @@ public class BoardManager : MonoBehaviour {
         yield return new WaitForSeconds(1);
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
         {
-            Grid.Instance.Holes.ElementAt(0).Value.hasPeg = true;
-            Grid.Instance.Holes.ElementAt(1).Value.hasPeg = true;
-            Grid.Instance.Holes.ElementAt(2).Value.hasPeg = false;
+            Grid.Instance.Holes.ElementAt(0).Value.hasPeg = false;
+            Grid.Instance.Holes.ElementAt(1).Value.hasPeg = false;
+            Grid.Instance.Holes.ElementAt(2).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(3).Value.hasPeg = true;
-            Grid.Instance.Holes.ElementAt(4).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(4).Value.hasPeg = false;
             Grid.Instance.Holes.ElementAt(5).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(6).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(7).Value.hasPeg = true;
@@ -43,16 +48,16 @@ public class BoardManager : MonoBehaviour {
             Grid.Instance.Holes.ElementAt(12).Value.hasPeg = false;
             Grid.Instance.Holes.ElementAt(13).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(14).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(i).Value.CheckForPeg();
         }
     }
 
     void Start()
     {
+        holdingPegGO.SetActive(false);
         if (easyMode)
         { StartCoroutine(EasyMode()); }
     }
-
-
 
     public void ValidOrNotFor2Spots(int neighbor1, int neighbor2, int spot1, int spot2 )
     {
@@ -88,6 +93,22 @@ public class BoardManager : MonoBehaviour {
         { Grid.Instance.Holes.ElementAt(neighbor3).Value.ChangecolorToBad(); }
         if (Grid.Instance.Holes.ElementAt(neighbor4).Value.hasPeg == false)
         { Grid.Instance.Holes.ElementAt(neighbor4).Value.ChangecolorToBad(); }
+
+        if (Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == true)
+        { Grid.Instance.Holes.ElementAt(spot2).Value.ChangeColorToGood();
+
+        }
+
+        if (Grid.Instance.Holes.ElementAt(neighbor3).Value.hasPeg == true)
+        { Grid.Instance.Holes.ElementAt(spot3).Value.ChangeColorToGood(); }
+
+        if (Grid.Instance.Holes.ElementAt(neighbor4).Value.hasPeg == true)
+        { Grid.Instance.Holes.ElementAt(spot4).Value.ChangeColorToGood(); }
+
+        if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == true)
+        { Grid.Instance.Holes.ElementAt(spot1).Value.ChangeColorToGood(); }
+
+
 
     }
 
