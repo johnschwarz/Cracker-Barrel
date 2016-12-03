@@ -12,6 +12,15 @@ public class Grid : MonoBehaviour
 
     public Dictionary<Point, HoleController> Holes { get; set; }
 
+    private int[,] board = new int[,]
+        {
+            { 1,1,1,1,1},
+            { 1,1,1,1,0},
+            { 0,1,1,1,0},
+            { 0,1,1,0,0},
+            { 0,0,1,0,0}
+        };
+
     private static Grid _Instance;
     public static Grid Instance
     {
@@ -30,16 +39,6 @@ public class Grid : MonoBehaviour
         }
         DontDestroyOnLoad(this.gameObject);
     }
-
-
-    private int[,] board = new int[,]
-        {
-            { 1,1,1,1,1},
-            { 1,1,1,1,0},
-            { 0,1,1,1,0},
-            { 0,1,1,0,0},
-            { 0,0,1,0,0}
-        };
 
     void Start()
     {

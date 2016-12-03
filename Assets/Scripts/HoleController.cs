@@ -4,7 +4,6 @@ using System.Linq;
 
 public class HoleController : MonoBehaviour
 {
-
     public Color[] statesOfHole;
     public bool hasPeg;
     public Point GridPosition { get; private set; }
@@ -24,13 +23,13 @@ public class HoleController : MonoBehaviour
     public bool thirdSpot;
     public bool fourthSpot;
 
-
     void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
         sprite.color = statesOfHole[0];
     }
 
+    // Used in BoardManager when setting up the board
     public void CheckForPeg()
     {
         if (hasPeg)
@@ -49,40 +48,65 @@ public class HoleController : MonoBehaviour
         Grid.Instance.Holes.Add(gridPos, this);
     }
 
-    // Covers picking up and putting down, but how to remove the peg?
+    IEnumerator IMovePeg(Transform moveMe, Vector3 startPos, Vector3 endPos, float time)
+    {
+        
+        float i = 0.0f;
+        float rate = 1.0f / time;
+        while (i < 1.0)
+        {
+            i += Time.deltaTime * rate;
+            moveMe.position = Vector3.Lerp(startPos, endPos, i);
+            
+            yield return new WaitForSeconds (0.0f);
+            
+        }
+        if (!BoardManager.Instance.isHeld)
+        {
+            BoardManager.Instance.holdingPegGO.SetActive(false);
+        }
+    }
+
+    
     void OnMouseDown()
     {
-        // BoardManager checks for Valid holes.
+        // BoardManager checks for Valid holes in OnMouseOver
         if (!BoardManager.Instance.isHeld)
         {
             // Checks to see if it's the hole you clicked; used later to deactivate the pegGO on the hole.
             startingHole = true;
-            // Used to keep holes highlighted.
+            // Used to keep holes highlighted and is used in the IMovePeg
             BoardManager.Instance.isHeld = true;
             canBePutInto = true;
             pegGO.SetActive(false);
+            sprite.color = statesOfHole[3];
             BoardManager.Instance.holdingPegGO.SetActive(true);
+            StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, gameObject.transform.position, BoardManager.Instance.PegSpot.position, 0.2f));
+            
         }
         else if (BoardManager.Instance.isHeld && canBePutInto && startingHole)
         {
-            BoardManager.Instance.holdingPegGO.SetActive(false);
+            
             pegGO.SetActive(true);
             canBePutInto = false;
             startingHole = false;
             BoardManager.Instance.isHeld = false;
             ReturnPegsToDefault();
-
+            StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, BoardManager.Instance.PegSpot.position, gameObject.transform.position,  0.2f));
+            
         }
         else if (BoardManager.Instance.isHeld && canBePutInto && !startingHole)
         {
             CheckPegsForJump();
+            StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, BoardManager.Instance.PegSpot.position, gameObject.transform.position,  0.2f));
             ReturnPegsToDefault();
+            
         }
     }
 
     private void CheckPegsForJump()
     {
-        BoardManager.Instance.holdingPegGO.SetActive(false);
+        
         pegGO.SetActive(true);
         canBePutInto = false;
         hasPeg = true;
@@ -145,14 +169,10 @@ public class HoleController : MonoBehaviour
                 }
             }
         }
-
-
     }
-
 
     private void ReturnPegsToDefault()
     {
-
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
         {
             Grid.Instance.Holes.ElementAt(i).Value.ChangeColorToDefault();
@@ -165,6 +185,8 @@ public class HoleController : MonoBehaviour
             Grid.Instance.Holes.ElementAt(i).Value.secondSpot = false;
             Grid.Instance.Holes.ElementAt(i).Value.thirdSpot = false;
             Grid.Instance.Holes.ElementAt(i).Value.fourthSpot = false;
+            Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+            Grid.Instance.Holes.ElementAt(i).Value.startingHole = false;
         }
     }
 
@@ -172,8 +194,6 @@ public class HoleController : MonoBehaviour
     {
         if (!BoardManager.Instance.isHeld)
         {
-            CheckForPeg();
-
             BoardManager.Instance.CheckMoves(gameObject.GetComponent<HoleController>());
         }
     }
@@ -189,20 +209,18 @@ public class HoleController : MonoBehaviour
     public void ChangeColorToDefault()
     {
         sprite.color = statesOfHole[0];
-        canBePutInto = false;
-        startingHole = false;
         CheckForPeg();
     }
+
     public void ChangeColorToGood()
     {
         sprite.color = statesOfHole[1];
         canBePutInto = true;
     }
+
     public void ChangecolorToBad()
     {
         sprite.color = statesOfHole[2];
         canBePutInto = false;
     }
-
-
 }
