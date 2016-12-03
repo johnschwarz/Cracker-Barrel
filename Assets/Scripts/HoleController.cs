@@ -40,6 +40,7 @@ public class HoleController : MonoBehaviour
         {
             pegGO.SetActive(false);
         }
+        TimeAndMenuManager.Instance.CountPegs();
     }
 
     public void Setup(Point gridPos)
@@ -70,6 +71,7 @@ public class HoleController : MonoBehaviour
     
     void OnMouseDown()
     {
+        TimeAndMenuManager.Instance.CountPegs();
         // BoardManager checks for Valid holes in OnMouseOver
         if (!BoardManager.Instance.isHeld)
         {

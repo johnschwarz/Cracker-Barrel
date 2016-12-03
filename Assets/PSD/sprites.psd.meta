@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a0076222339b43644983f0c81065d171
-timeCreated: 1480730035
+timeCreated: 1480795596
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,7 @@ TextureImporter:
     21300008: Hole
     21300010: Peg
     21300012: PegHeld
+    21300014: button
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -63,10 +64,10 @@ TextureImporter:
       name: Triangle
       rect:
         serializedVersion: 2
-        x: 0
-        y: 70
-        width: 30
-        height: 30
+        x: 20
+        y: 0
+        width: 70
+        height: 61
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,6 +146,19 @@ TextureImporter:
         y: 65
         width: 16
         height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: button
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 74
+        width: 19
+        height: 6
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
