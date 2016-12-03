@@ -106,8 +106,6 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         holdingPegGO.SetActive(false);
-        if (easyMode)
-        { StartCoroutine(IEasyMode()); }
     }
 
     public void CheckTwoSurroundingHolesForValidity(int neighbor1, int neighbor2, int spot1, int spot2)
