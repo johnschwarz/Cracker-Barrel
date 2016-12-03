@@ -75,6 +75,7 @@ public class HoleController : MonoBehaviour
         // BoardManager checks for Valid holes in OnMouseOver
         if (!BoardManager.Instance.isHeld)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.peg);
             // Checks to see if it's the hole you clicked; used later to deactivate the pegGO on the hole.
             startingHole = true;
             // Used to keep holes highlighted and is used in the IMovePeg
@@ -85,10 +86,11 @@ public class HoleController : MonoBehaviour
             BoardManager.Instance.holdingPegGO.SetActive(true);
             StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, gameObject.transform.position, BoardManager.Instance.PegSpot.position, 0.2f));
             
+            
         }
         else if (BoardManager.Instance.isHeld && canBePutInto && startingHole)
         {
-            
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.peg);
             pegGO.SetActive(true);
             canBePutInto = false;
             startingHole = false;
@@ -99,6 +101,7 @@ public class HoleController : MonoBehaviour
         }
         else if (BoardManager.Instance.isHeld && canBePutInto && !startingHole)
         {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.peg);
             CheckPegsForJump();
             StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, BoardManager.Instance.PegSpot.position, gameObject.transform.position,  0.2f));
             ReturnPegsToDefault();
@@ -132,6 +135,7 @@ public class HoleController : MonoBehaviour
                     Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
                     Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
                     Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.collectPeg);
                 }
             }
         }
@@ -144,6 +148,7 @@ public class HoleController : MonoBehaviour
                     Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
                     Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
                     Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.collectPeg);
                 }
             }
         }
@@ -156,6 +161,7 @@ public class HoleController : MonoBehaviour
                     Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
                     Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
                     Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.collectPeg);
                 }
             }
         }
@@ -168,6 +174,7 @@ public class HoleController : MonoBehaviour
                     Grid.Instance.Holes.ElementAt(i).Value.pegGO.SetActive(false);
                     Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
                     Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.collectPeg);
                 }
             }
         }

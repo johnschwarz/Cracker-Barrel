@@ -26,6 +26,25 @@ public class TimeAndMenuManager : MonoBehaviour
 
     private bool isMoving = false;
 
+    private static TimeAndMenuManager _Instance;
+    public static TimeAndMenuManager Instance
+    {
+        get { return _Instance; }
+    }
+    void Awake()
+    {
+        if (_Instance != null && _Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            _Instance = this;
+        }
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     void Start()
     {
         cameraStart = Camera.main.transform.position;
@@ -61,6 +80,7 @@ public class TimeAndMenuManager : MonoBehaviour
 
     public void selectEasy()
     {
+        timeLeft = 5;
         BoardManager.Instance.StartCoroutine(BoardManager.Instance.IEasyMode());
         selectionPanel.SetActive(false);
         shouldCountDown = true;
@@ -69,6 +89,7 @@ public class TimeAndMenuManager : MonoBehaviour
     }
     public void selectMedium()
     {
+        timeLeft = 180;
         BoardManager.Instance.StartCoroutine(BoardManager.Instance.IMediumMode());
         selectionPanel.SetActive(false);
         shouldCountDown = true;
@@ -77,6 +98,7 @@ public class TimeAndMenuManager : MonoBehaviour
     }
     public void selectHard()
     {
+        timeLeft = 180;
         BoardManager.Instance.StartCoroutine(BoardManager.Instance.IHardMode());
         selectionPanel.SetActive(false);
         shouldCountDown = true;
@@ -89,6 +111,7 @@ public class TimeAndMenuManager : MonoBehaviour
         {
             isPlaying = false;
             shouldCountDown = false;
+            timerText.text = "";
             timeLeft = 180;
             for (int i = 0; i < Grid.Instance.Holes.Count; i++)
             {
@@ -102,24 +125,7 @@ public class TimeAndMenuManager : MonoBehaviour
             StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 0.5f, false));
         }
     }
-    private static TimeAndMenuManager _Instance;
-    public static TimeAndMenuManager Instance
-    {
-        get { return _Instance; }
-    }
-    void Awake()
-    {
-        if (_Instance != null && _Instance != this)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-        else
-        {
-            _Instance = this;
-        }
-        DontDestroyOnLoad(this.gameObject);
-    }
+   
 
     void Update()
     {
@@ -135,7 +141,37 @@ public class TimeAndMenuManager : MonoBehaviour
             int seconds = Mathf.FloorToInt(timeLeft - mintutes * 60);
             string timeToDisplay = string.Format("{0:0}: {1:00}", mintutes, seconds);
             timerText.text = timeToDisplay;
+            if (timeLeft <= 0)
+            {
+                StartCoroutine(ILose());
+                
+            }
         }
+    }
+
+    IEnumerator ILose()
+    {
+        StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
+        shouldCountDown = false;
+        infoPanel.SetActive(false);
+        timerText.text = "0:00";
+        yield return new WaitForSeconds(0.1f);
+        selectionPanel.SetActive(true);
+        difficultyPanel.SetActive(false);
+        titleText.text = "Timeup!";
+        howToText.text = "";
+        yield return new WaitForSeconds(1.1f);
+        titleText.text = "Why   not   try   again?";
+        yield return new WaitForSeconds(1.1f);
+        titleText.text = "But   on   an   easier   difficulty!";
+        yield return new WaitForSeconds(1.1f);
+        for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+        {
+            Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+        }
+        isPlaying = false;
+        timeLeft = 1;
+        difficultyPanel.SetActive(true);
     }
 
     public int CountPegs()
@@ -167,12 +203,12 @@ public class TimeAndMenuManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         selectionPanel.SetActive(true);
         difficultyPanel.SetActive(false);
-        titleText.text = "You've won!";
+        titleText.text = "You've   won!";
         howToText.text = "";
         yield return new WaitForSeconds(1.1f);
-        titleText.text = "Why not try again?";
+        titleText.text = "Why   not   try   again?";
         yield return new WaitForSeconds(1.1f);
-        titleText.text = "But on a harder difficulty!";
+        titleText.text = "But   on   a   harder   difficulty!";
         yield return new WaitForSeconds(1.1f);
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
         {
