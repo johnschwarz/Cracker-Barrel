@@ -40,34 +40,18 @@ public class BoardManager : MonoBehaviour
             Grid.Instance.Holes.ElementAt(0).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(1).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(2).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(3).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(4).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(5).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(6).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(7).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(8).Value.hasPeg = false;
+            Grid.Instance.Holes.ElementAt(3).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(4).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(5).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(6).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(7).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(8).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(9).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(10).Value.hasPeg = false;
+            Grid.Instance.Holes.ElementAt(10).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(11).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(12).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(13).Value.hasPeg = false;
-            Grid.Instance.Holes.ElementAt(14).Value.hasPeg = false;
-
-            //Grid.Instance.Holes.ElementAt(0).Value.hasPeg = false;
-            //Grid.Instance.Holes.ElementAt(1).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(2).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(3).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(4).Value.hasPeg = false;
-            //Grid.Instance.Holes.ElementAt(5).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(6).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(7).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(8).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(9).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(10).Value.hasPeg = false;
-            //Grid.Instance.Holes.ElementAt(11).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(12).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(13).Value.hasPeg = true;
-            //Grid.Instance.Holes.ElementAt(14).Value.hasPeg = false;
+            Grid.Instance.Holes.ElementAt(12).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(13).Value.hasPeg = true;
+            Grid.Instance.Holes.ElementAt(14).Value.hasPeg = true;
             Grid.Instance.Holes.ElementAt(i).Value.CheckForPeg();
         }
     }

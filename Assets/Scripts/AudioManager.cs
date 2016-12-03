@@ -26,10 +26,16 @@ public class AudioManager : MonoBehaviour {
         DontDestroyOnLoad(this.gameObject);
     }
 
+    void Start()
+    {
+        PlayMusic(menuMusic);
+    }
+
     public void PlaySFX(AudioClip inclip)
     {
         sFXSource.PlayOneShot(inclip);
     }
+
 
     public void PlayMusic(AudioClip inclip)
     {
@@ -37,6 +43,21 @@ public class AudioManager : MonoBehaviour {
         musicSource.loop = true;
         musicSource.clip = inclip;
         musicSource.Play();
+    }
+
+    public void Button()
+    {
+        PlaySFX(button);
+    }
+
+    public void PlayGameMusic()
+    {
+        PlayMusic(gameMusic);
+    }
+
+    public void PlayMenuMusic()
+    {
+        PlayMusic(menuMusic);
     }
 
 }

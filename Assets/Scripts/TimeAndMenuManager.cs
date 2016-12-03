@@ -80,7 +80,7 @@ public class TimeAndMenuManager : MonoBehaviour
 
     public void selectEasy()
     {
-        timeLeft = 5;
+        timeLeft = 180;
         BoardManager.Instance.StartCoroutine(BoardManager.Instance.IEasyMode());
         selectionPanel.SetActive(false);
         shouldCountDown = true;
@@ -151,6 +151,7 @@ public class TimeAndMenuManager : MonoBehaviour
 
     IEnumerator ILose()
     {
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
         StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
         shouldCountDown = false;
         infoPanel.SetActive(false);
@@ -196,6 +197,7 @@ public class TimeAndMenuManager : MonoBehaviour
 
     IEnumerator IWin()
     {
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
         StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
         shouldCountDown = false;
         infoPanel.SetActive(false);
