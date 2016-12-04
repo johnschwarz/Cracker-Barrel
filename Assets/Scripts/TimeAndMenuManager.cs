@@ -109,6 +109,7 @@ public class TimeAndMenuManager : MonoBehaviour
     {
         if (!BoardManager.Instance.isHeld)
         {
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.menuMusic);
             isPlaying = false;
             shouldCountDown = false;
             timerText.text = "";
@@ -143,29 +144,32 @@ public class TimeAndMenuManager : MonoBehaviour
             timerText.text = timeToDisplay;
             if (timeLeft <= 0)
             {
-                StartCoroutine(ILose());
+                StartCoroutine(ILose("Time   Up!"));
                 
             }
         }
     }
 
-   public IEnumerator ILose()
+   public IEnumerator ILose(string lossReasonString)
     {
         AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
         StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
         shouldCountDown = false;
         infoPanel.SetActive(false);
-        timerText.text = "0:00";
+        timerText.text = "";
         yield return new WaitForSeconds(0.1f);
         selectionPanel.SetActive(true);
         difficultyPanel.SetActive(false);
-        titleText.text = "Timeup!";
+        titleText.text = "You    Lose!";
         howToText.text = "";
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(3.1f);
+        titleText.text = lossReasonString;
+        
+        yield return new WaitForSeconds(3.1f);
         titleText.text = "Why   not   try   again?";
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(2.1f);
         titleText.text = "But   on   an   easier   difficulty!";
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(3.1f);
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
         {
             Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
@@ -173,6 +177,8 @@ public class TimeAndMenuManager : MonoBehaviour
         isPlaying = false;
         timeLeft = 1;
         difficultyPanel.SetActive(true);
+        titleText.text = "";
+        returnToMenu();
     }
 
     public int CountPegs()
@@ -192,7 +198,6 @@ public class TimeAndMenuManager : MonoBehaviour
             amount = 0;
             pegCount.text = "";
         }
-        //StartCoroutine(BoardManager.Instance.ICheckForLoss());
         return amount;
     }
 

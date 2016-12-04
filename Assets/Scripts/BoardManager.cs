@@ -216,7 +216,7 @@ public class BoardManager : MonoBehaviour
 
         if (amountOfHolesBad == amountOfHolesChecked)
         {
-            StartCoroutine(TimeAndMenuManager.Instance.ILose());
+            StartCoroutine(TimeAndMenuManager.Instance.ILose("No    Good    Moves    Left!"));
         }
         else
         {
