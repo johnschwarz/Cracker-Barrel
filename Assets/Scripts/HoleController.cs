@@ -53,7 +53,6 @@ public class HoleController : MonoBehaviour
 
     IEnumerator IMovePeg(Transform moveMe, Vector3 startPos, Vector3 endPos, float time)
     {
-        
         float i = 0.0f;
         float rate = 1.0f / time;
         while (i < 1.0)
@@ -74,11 +73,15 @@ public class HoleController : MonoBehaviour
     
     void OnMouseDown()
     {
-        
         TimeAndMenuManager.Instance.CountPegs();
         // BoardManager checks for Valid holes in OnMouseOver
         if (!BoardManager.Instance.isHeld)
         {
+            if (!BoardManager.Instance.isHeld)
+            {
+                BoardManager.Instance.CheckMoves(gameObject.GetComponent<HoleController>());
+            }
+
             AudioManager.Instance.PlaySFX(AudioManager.Instance.peg);
             // Checks to see if it's the hole you clicked; used later to deactivate the pegGO on the hole.
             startingHole = true;
@@ -89,8 +92,6 @@ public class HoleController : MonoBehaviour
             sprite.color = statesOfHole[3];
             BoardManager.Instance.holdingPegGO.SetActive(true);
             StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, gameObject.transform.position, BoardManager.Instance.PegSpot.position, 0.2f));
-            
-            
         }
         else if (BoardManager.Instance.isHeld && canBePutInto && startingHole)
         {
@@ -188,8 +189,6 @@ public class HoleController : MonoBehaviour
         }
     }
 
-   
-
     public void ReturnPegsToDefault()
     {
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
@@ -207,17 +206,13 @@ public class HoleController : MonoBehaviour
             Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
             Grid.Instance.Holes.ElementAt(i).Value.startingHole = false;
         }
-        
     }
-
-    
 
     private void OnMouseOver()
     {
         if (!BoardManager.Instance.isHeld)
         {
             BoardManager.Instance.CheckMoves(gameObject.GetComponent<HoleController>());
-            
         }
     }
 
