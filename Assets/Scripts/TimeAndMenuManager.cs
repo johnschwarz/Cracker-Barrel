@@ -149,7 +149,7 @@ public class TimeAndMenuManager : MonoBehaviour
         }
     }
 
-    IEnumerator ILose()
+   public IEnumerator ILose()
     {
         AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
         StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
@@ -192,6 +192,7 @@ public class TimeAndMenuManager : MonoBehaviour
             amount = 0;
             pegCount.text = "";
         }
+        //StartCoroutine(BoardManager.Instance.ICheckForLoss());
         return amount;
     }
 

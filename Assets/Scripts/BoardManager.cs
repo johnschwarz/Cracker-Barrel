@@ -111,6 +111,10 @@ public class BoardManager : MonoBehaviour
         holdingPegGO.SetActive(false);
     }
 
+
+    public bool check1;
+    public bool check2;
+
     public void CheckTwoSurroundingHolesForValidity(int neighbor1, int neighbor2, int spot1, int spot2)
     {
         if (Grid.Instance.Holes.ElementAt(neighbor1).Value.hasPeg == true && Grid.Instance.Holes.ElementAt(neighbor2).Value.hasPeg == true)
@@ -146,7 +150,9 @@ public class BoardManager : MonoBehaviour
         {
             Grid.Instance.Holes.ElementAt(neighbor1).Value.ChangecolorToBad();
             Grid.Instance.Holes.ElementAt(neighbor2).Value.ChangecolorToBad();
+            
         }
+
     }
 
     public void CheckFourSurroundingHolesForValidity(int neighbor1, int neighbor2, int neighbor3, int neighbor4, int spot1, int spot2, int spot3, int spot4)
@@ -195,6 +201,31 @@ public class BoardManager : MonoBehaviour
             Grid.Instance.Holes.ElementAt(neighbor4).Value.fourthChoice = true;
             Grid.Instance.Holes.ElementAt(spot4).Value.fourthSpot = true;
         }
+    }
+    public int amountOfHolesChecked;
+    public int amountOfHolesBad;
+
+    public IEnumerator ICheckForLoss()
+    {
+        amountOfHolesChecked = 0;
+        amountOfHolesBad = 0;
+        for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+        {
+            CheckMoves(Grid.Instance.Holes.Values.ElementAt(i).GetComponent<HoleController>());
+        }
+
+        if (amountOfHolesBad == amountOfHolesChecked)
+        {
+            StartCoroutine(TimeAndMenuManager.Instance.ILose());
+        }
+        else
+        {
+            for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+            {
+                Grid.Instance.Holes.ElementAt(i).Value.ChangeColorToDefault();
+            }
+        }
+        yield return null;
     }
 
     public void CheckMoves(HoleController holeController)

@@ -23,6 +23,8 @@ public class HoleController : MonoBehaviour
     public bool thirdSpot;
     public bool fourthSpot;
 
+    public bool checkForGameOver;
+
     void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
@@ -66,11 +68,13 @@ public class HoleController : MonoBehaviour
         {
             BoardManager.Instance.holdingPegGO.SetActive(false);
         }
+        
     }
 
     
     void OnMouseDown()
     {
+        
         TimeAndMenuManager.Instance.CountPegs();
         // BoardManager checks for Valid holes in OnMouseOver
         if (!BoardManager.Instance.isHeld)
@@ -90,6 +94,7 @@ public class HoleController : MonoBehaviour
         }
         else if (BoardManager.Instance.isHeld && canBePutInto && startingHole)
         {
+            
             AudioManager.Instance.PlaySFX(AudioManager.Instance.peg);
             pegGO.SetActive(true);
             canBePutInto = false;
@@ -105,7 +110,7 @@ public class HoleController : MonoBehaviour
             CheckPegsForJump();
             StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, BoardManager.Instance.PegSpot.position, gameObject.transform.position,  0.2f));
             ReturnPegsToDefault();
-            
+            StartCoroutine(BoardManager.Instance.ICheckForLoss());
         }
     }
 
@@ -180,6 +185,8 @@ public class HoleController : MonoBehaviour
         }
     }
 
+   
+
     public void ReturnPegsToDefault()
     {
         for (int i = 0; i < Grid.Instance.Holes.Count; i++)
@@ -197,13 +204,17 @@ public class HoleController : MonoBehaviour
             Grid.Instance.Holes.ElementAt(i).Value.canBePutInto = false;
             Grid.Instance.Holes.ElementAt(i).Value.startingHole = false;
         }
+        
     }
+
+    
 
     private void OnMouseOver()
     {
         if (!BoardManager.Instance.isHeld)
         {
             BoardManager.Instance.CheckMoves(gameObject.GetComponent<HoleController>());
+            
         }
     }
 
@@ -219,17 +230,22 @@ public class HoleController : MonoBehaviour
     {
         sprite.color = statesOfHole[0];
         CheckForPeg();
+        
     }
 
     public void ChangeColorToGood()
     {
         sprite.color = statesOfHole[1];
         canBePutInto = true;
+        BoardManager.Instance.amountOfHolesChecked++;
     }
 
     public void ChangecolorToBad()
     {
         sprite.color = statesOfHole[2];
         canBePutInto = false;
+        BoardManager.Instance.amountOfHolesChecked++;
+        BoardManager.Instance.amountOfHolesBad++;
+
     }
 }
