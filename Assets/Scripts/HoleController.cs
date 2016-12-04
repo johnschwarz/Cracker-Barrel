@@ -110,7 +110,10 @@ public class HoleController : MonoBehaviour
             CheckPegsForJump();
             StartCoroutine(IMovePeg(BoardManager.Instance.holdingPegGO.transform, BoardManager.Instance.PegSpot.position, gameObject.transform.position,  0.2f));
             ReturnPegsToDefault();
-            StartCoroutine(BoardManager.Instance.ICheckForLoss());
+            if (TimeAndMenuManager.Instance.CountPegs() > 1)
+            {
+                StartCoroutine(BoardManager.Instance.ICheckForLoss());
+            }
         }
     }
 

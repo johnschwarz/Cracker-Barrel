@@ -21,6 +21,8 @@ public class TimeAndMenuManager : MonoBehaviour
     public GameObject difficultyPanel;
 
     Vector3 cameraStart;
+    private bool isWinning;
+    private bool isLosing;
 
     public bool isPlaying = false;
 
@@ -152,33 +154,38 @@ public class TimeAndMenuManager : MonoBehaviour
 
    public IEnumerator ILose(string lossReasonString)
     {
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
-        StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
-        shouldCountDown = false;
-        infoPanel.SetActive(false);
-        timerText.text = "";
-        yield return new WaitForSeconds(0.1f);
-        selectionPanel.SetActive(true);
-        difficultyPanel.SetActive(false);
-        titleText.text = "You    Lose!";
-        howToText.text = "";
-        yield return new WaitForSeconds(3.1f);
-        titleText.text = lossReasonString;
-        
-        yield return new WaitForSeconds(3.1f);
-        titleText.text = "Why   not   try   again?";
-        yield return new WaitForSeconds(2.1f);
-        titleText.text = "But   on   an   easier   difficulty!";
-        yield return new WaitForSeconds(3.1f);
-        for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+        if (!isLosing)
         {
-            Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+            isLosing = true;
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
+            StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
+            shouldCountDown = false;
+            infoPanel.SetActive(false);
+            timerText.text = "";
+            yield return new WaitForSeconds(0.1f);
+            selectionPanel.SetActive(true);
+            difficultyPanel.SetActive(false);
+            titleText.text = "You    Lose!";
+            howToText.text = "";
+            yield return new WaitForSeconds(3.1f);
+            titleText.text = lossReasonString;
+
+            yield return new WaitForSeconds(3.1f);
+            titleText.text = "Why   not   try   again?";
+            yield return new WaitForSeconds(2.1f);
+            titleText.text = "But   on   an   easier   difficulty!";
+            yield return new WaitForSeconds(3.1f);
+            for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+            {
+                Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+            }
+            isPlaying = false;
+            timeLeft = 1;
+            difficultyPanel.SetActive(true);
+            titleText.text = "";
+            returnToMenu();
+            isLosing = false;
         }
-        isPlaying = false;
-        timeLeft = 1;
-        difficultyPanel.SetActive(true);
-        titleText.text = "";
-        returnToMenu();
     }
 
     public int CountPegs()
@@ -200,30 +207,36 @@ public class TimeAndMenuManager : MonoBehaviour
         }
         return amount;
     }
+    
 
     IEnumerator IWin()
     {
-        AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
-        StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
-        shouldCountDown = false;
-        infoPanel.SetActive(false);
-        timerText.text = "";
-        yield return new WaitForSeconds(0.1f);
-        selectionPanel.SetActive(true);
-        difficultyPanel.SetActive(false);
-        titleText.text = "You've   won!";
-        howToText.text = "";
-        yield return new WaitForSeconds(1.1f);
-        titleText.text = "Why   not   try   again?";
-        yield return new WaitForSeconds(1.1f);
-        titleText.text = "But   on   a   harder   difficulty!";
-        yield return new WaitForSeconds(1.1f);
-        for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+        if (!isWinning)
         {
-            Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+            isWinning = true;
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.winMusic);
+            StartCoroutine(IMoveCamera(32, 51, new Vector3(-10, -5, -10), cameraStart, 2.5f, false));
+            shouldCountDown = false;
+            infoPanel.SetActive(false);
+            timerText.text = "";
+            yield return new WaitForSeconds(0.1f);
+            selectionPanel.SetActive(true);
+            difficultyPanel.SetActive(false);
+            titleText.text = "You've   won!";
+            howToText.text = "";
+            yield return new WaitForSeconds(1.1f);
+            titleText.text = "Why   not   try   again?";
+            yield return new WaitForSeconds(1.1f);
+            titleText.text = "But   on   a   harder   difficulty!";
+            yield return new WaitForSeconds(1.1f);
+            for (int i = 0; i < Grid.Instance.Holes.Count; i++)
+            {
+                Grid.Instance.Holes.ElementAt(i).Value.hasPeg = false;
+            }
+            isPlaying = false;
+            difficultyPanel.SetActive(true);
+            isWinning = false;
         }
-        isPlaying = false;
-        difficultyPanel.SetActive(true);
     }
 
 }
